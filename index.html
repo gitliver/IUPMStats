@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+        <!-- title -->
+        <title>IUPMStats</title>
+
+        <!-- meta -->
+        <meta name="description" content="IUPMStats">
+        <meta name="keywords" content="HIV">
+        <meta name="author" content="Oliver">
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- favicon -->
+	<link rel="icon" type="image/ico" href="img/favicon.ico" />
+
+	<!-- styles -->
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.2.0-dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.2.0-dist/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.2.0-dist/css/sticky-footer-navbar.css" />
+
+	<!-- this overrides the default field widths to make them smaller; also, add a class for scrolling div boxes -->
+	<style>
+	.styleOverride input 
+	{
+		width: 120px !important;
+	}
+
+	.styleOverride2 input 
+	{
+		width: 130px !important;
+	}
+
+	.myScrollDiv 
+	{
+		width: 400px; 
+		overflow: auto;
+	}
+
+	.ui-dialog-titlebar
+	{
+	      background: black;
+	      border: 0;
+	}
+
+	.littleMargin
+	{
+	      margin: 15px;
+	      line-height: 15px;
+	}
+
+	.myLine 
+	{
+		border-bottom: 1px solid #ccc;
+	}
+
+	#aboutCalculator 
+	{
+		cursor: pointer; 
+		cursor: hand;
+	}
+	</style>
+        
+	<!-- scripts -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="js/my_functions_calc.js"></script>
+	<script type="text/javascript" src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/math.min.js"></script>
+	<script type="text/javascript" src="js/Cobyla.js"></script>
+	<script type="text/javascript" src="js/chiCalc.js"></script>
+	<script type="text/javascript" src="js/Chart.min.js"></script>
+
+	<script> 
+	$(document).ready(function() {
+		computeOutput();
+		showHideInstructions();
+	}); 
+	</script>
+</head>
+
+<body>
+
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="http://www.hopkinsmedicine.org/profiles/results/directory/profile/4373686/robert-siliciano">Siliciano Lab</a>
+	</div>
+	<div class="collapse navbar-collapse">
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="#">Home</a></li>
+		</ul>
+	</div><!-- nav-collapse -->
+	</div>
+	</div>
+
+	<!-- Begin page content -->
+	<div class="container">
+
+		<h2>IUPMStats <small>v1.0</small></h2>
+		<h4>Infection Frequency Calculator</h4>
+
+		<br>
+			
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist" id="myTabSet">
+			<li class="dropdown">
+			<a href="#" id="myTabDrop0" class="dropdown-toggle" data-toggle="dropdown"><small>Assay Setup</small><span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop0">
+					<li><a href="#custom" role="tab" data-toggle="tab">Custom Well Sizes</a></li>
+					<li><a href="#dilution" tabindex="-1" role="tab" data-toggle="tab">Constant Limiting Dilution</a></li>
+				</ul>
+			</li>
+			<li><a href="#fileupload" role="tab" data-toggle="tab"><small>Upload or Paste Data</small></a></li>
+			<li><a href="#dropdown_calc" role="tab" data-toggle="tab"><small>About this Calculator</small></a></li>
+		</ul>
+		
+		<!-- Tab panes -->
+		<div class="tab-content">
+
+		<div class="tab-pane active" id="custom">
+
+			<br>
+
+			<div class="row">
+
+				<div class="col-md-3">
+					<form role="form">
+						<div class="form-group">
+							<label for="name">Enter Number of Unique Well Sizes<br><small>(or use the buttons below)</small></label>
+							<input type="number" class="form-control" id="inputWellSizes" placeholder="well sizes" min="1" max="50">
+						</div>
+
+						<button type="submit" id="button_NumberWellSizes" class="btn btn-default">Submit</button>
+
+						<br>
+						<br>
+					</form>
+				</div><!-- col -->
+
+				<div class="col-md-4">
+				<small>
+				To measure the frequency of HIV-1 latency, <a href="http://www.hopkinsmedicine.org/profiles/results/directory/profile/4373686/robert-siliciano">The Siliciano Lab </a> developed an assay that uses uninfected donor cells to grow HIV-1 out of cells from infected patients at various dilutions. This calculator, written by <a href="http://www.danielrosenbloom.com">Daniel Rosenbloom</a>, computes the frequency of latent infection based on which dilutions of patient cells are positive for HIV-1 growth.
+				<b>Use this calculator to estimate infection frequencies from limiting dilution assays.</b> In particular, this calculator can be used with an outgrowth assay to measure latent infection in HIV <sup>1, 2</sup>. Enter information about your wells in the following order, using a separate line for each well size: number of cells per well, number of replicates of this size, and number of positive outcomes (i.e., wells in which outgrowth was detected). In addition to providing a maximum-likelihood estimate, this calculator returns a 95% confidence interval. Further information about interpreting the output is provided under "<a id="aboutCalculator">About this Calculator</a>."
+				</small>
+				<br>
+				<br>
+				</div><!-- col -->
+
+			</div><!-- row -->
+
+			<div class="row">
+
+				<div class="col-md-7">
+					<div class="jumbotron">
+
+						<div class="styleOverride">
+						<form id="myForm1" class="form-inline" role="form">
+
+							<small>
+							<b>
+							Enter well size (# cells), Number of replicates for this size, Number of positive outcomes for this size
+							</b>
+							</small>
+
+							<br>
+							<br>
+
+							<span id="jsEntry_Form"> </span>
+
+							<br>
+
+							<div class="btn-group">
+								<button type="button" class="btn btn-default" id="addField"> + </button>
+							</div>
+
+							<div class="btn-group">
+								<button type="button" class="btn btn-default" id="subField"> - </button>
+							</div>
+
+							<button type="submit" id="button_EnterData" class="btn btn-default">Calculate</button>
+
+							<span class="outputClass" id="jsEntry_Output"></span>
+						</form>
+						</div>
+					</div>
+				</div><!-- col -->
+
+			</div><!-- row -->
+
+			<div class="row">
+				<div class="col-md-7">
+
+					<small>
+
+					<b>References</b>
+
+					<br>
+					<br>
+
+					<sup>1</sup> Chun, T.-W., Carruth, L., Finzi, D., Shen, X., DiGiuseppe, J. A., Taylor, H., Hermankova, M., Chadwick, K., Margolick, J., Quinn, T. C., Kuo, Y.-H., Brookmeyer, R., Zeiger, M. A., Barditch-Crovo, P., Siliciano, R. F. 
+					<a href="http://www.ncbi.nlm.nih.gov/pubmed/9144289">Quantification of latent tissue reservoirs and total body viral load in HIV-1 infection</a>.
+					<i>Nature</i> <b>387</b>, 183–188 (1997).
+
+					<br>
+					<br>
+
+					<sup>2</sup> Laird G. M., Rosenbloom D. I. S., Lai J., Siliciano R. F., Siliciano J. D. Measuring the frequency of latent HIV-1 in resting CD4+ T cells using a limiting dilution co-culture assay. To appear in <i>HIV Protocols</i> (3rd ed). 
+
+					<br>
+					<br>
+
+					</small>
+
+				</div><!-- col -->
+			</div> <!-- row -->
+
+		</div> <! -- custom tab -->
+
+		<div class="tab-pane" id="dilution">
+
+			<br>
+
+			<div class="row">
+
+				<div class="col-md-6">
+
+					<div class="styleOverride2">
+					<form id="myForm2" class="form-inline" role="form">
+
+						<small>
+						<b>
+						Enter Number of Unique Well Sizes, Maximum Well Size (# cells), and Dilution Factor
+						</b>
+						</small>
+
+						<br>
+						<br>
+
+						<div class="form-group">
+							<input type="number" class="form-control" id="dilutionWellsizes" placeholder="well sizes">
+						</div>
+
+						<div class="form-group">
+							<input type="number" class="form-control" id="dilutionMax" placeholder="max well size">
+						</div>
+
+						<div class="form-group">
+							<input type="number" class="form-control" id="dilutionFactor" placeholder="dilution factor">
+						</div>
+
+						<br>
+						<br>
+
+						<button type="submit" id="button_DilutionParameters" class="btn btn-default">Submit</button>
+
+						<br>
+						<br>
+
+					</form>
+					</div>
+					
+				</div><!-- col -->
+
+			</div><!-- row -->
+			
+			<div class="row" id="startHidden">
+
+				<div class="col-md-7">
+					<div class="jumbotron">
+						<div class="styleOverride">
+						<form id="myForm3" class="form-inline" role="form">
+
+							<small>
+							<b>
+							Enter well size (# cells), Number of replicates for this size, Number of positive outcomes for this size
+							</b>
+							</small>
+
+							<br>
+							<br>
+
+							<span id="jsEntry_DilutionForm"></span>
+
+							<br>
+
+							<button type="submit" id="button_EnterDilutionData" class="btn btn-default">Calculate</button>
+
+							<span class="outputClass" id="jsEntry_DilutionOutput"></span>
+						</form>
+						</div>
+					</div>
+				</div><!-- col -->
+
+			</div><!-- row -->
+
+		</div> <! -- dilution tab -->
+
+		<div class="tab-pane" id="fileupload">
+
+			<br>
+
+			<div class="row">
+
+				<div class="col-md-3">
+					<form role="form">
+						<div class="form-group">
+							<label for="name">Choose a Text File to Upload:</label>
+							<input type="file" class="form-control" id="inputFile" placeholder="file">
+						</div>
+
+						<button type="submit" id="button_inputFile" class="btn btn-default">Submit</button>
+						<button type="button" id="instructionButton" class="btn btn-primary"><small>Hide Instructions</small></button>
+
+						<br>
+						<br>
+					</form>
+				</div><!-- col -->
+
+				<div class="col-md-3">
+					<form role="form">
+						<div class="form-group">
+							<label for="name">Or Paste Data:</label>
+							<p>
+							<textarea id="inputPaste" name="userText"></textarea>
+							</p>
+						</div>
+
+						<button type="submit" id="button_inputPaste" class="btn btn-default btn-sm">Submit</button>
+						<br>
+						<br>
+					</form>
+				</div><!-- col -->
+
+			</div><!-- row -->
+
+			<div class="row" id="uploadInstructions">
+
+				<div class="col-md-6">
+
+				To upload data for a <i>single</i> patient, create a text file where each row has three numbers: the well size (# cells), the number of replicates for this size, and the number of positive outcomes for this size. The values may be delimited by either white space or commas. For example, your file could look like this:
+
+				<br>
+				<br>
+
+				<samp>
+				<small>
+				900,9,1 <br>
+				400,5,2 <br>
+				100,10,2 <br>
+				</small>
+				</samp>
+
+				<br>
+
+				For <i>multiple</i> patients, simply add rows with a greater-than sign followed by the patient name (in homage to <a href="http://en.wikipedia.org/wiki/FASTA_format">fasta</a> format). For example, 
+
+				<br>
+				<br>
+
+				<samp>
+				<small>
+				&gt;patient1 <br>
+				900,9,0 <br>
+				100,10,2 <br>
+				&gt;patient2 <br>
+				400,5,2 <br>
+				500,10,1 <br>
+				&gt;patient3 <br>
+				600,10,1 <br>
+				500,4,3 <br>
+				300,5,2 <br>
+				</samp>
+				</small>
+
+				<br>
+
+				In this mode, the app will produce a graph showing the infection frequencies (IUPM) across the set of patients.
+
+				<br>
+				<br>
+
+				</div><!-- col -->
+
+			</div><!-- row -->
+
+			<div class="row" id="startHidden_2">
+
+				<div class="col-md-7">
+					<div class="jumbotron">
+						<div class="styleOverride">
+							<span class="outputClass" id="jsEntry_UploadOutput"></span>
+							<span id="startHidden_3">
+								<small><h5>Maximum likelihood</h5></small>
+								<span id="canvasSpan"></span>
+								<br>
+								<br>
+								<small><h5>Output Data</h5></small>
+								<div class="myScrollDiv" id="jsMultiPatientOutputData"></div>
+							</span>
+						</div>
+					</div>
+				</div><!-- col -->
+
+			</div><!-- row -->
+
+		</div> <! -- fileupload tab -->
+
+		<div class="tab-pane" id="dropdown_calc">
+			<div class="row">
+				<div class="col-md-7">
+					<br>
+					<h5>About This Calculator</h5>
+					To measure the frequency of HIV-1 latency, <a href="http://www.hopkinsmedicine.org/profiles/results/directory/profile/4373686/robert-siliciano">The Siliciano Lab </a> developed an assay some years ago that uses uninfected donor cells to grow HIV-1 out of cells from infected patients at various dilutions<sup>1, 2</sup>. This calculator, written by <a href="http://www.danielrosenbloom.com">Daniel Rosenbloom</a> and made into a web app by <a href="http://www.oliverelliott.org">Oliver Elliott</a>, computes the frequency of latent infection based on which dilutions of patient cells are positive for HIV-1 growth.
+
+					<br>
+					<br>
+
+					<h5>Interpreting the Output Statistics</h5>
+					<ul>
+						<li>The <b>maximum likelihood estimate</b> and <b>confidence interval</b> provide a good estimate of the infection frequency, assuming that (1) many cells (&gt;100s) are used in the assay, and (2) each cell in each well has the same probability of being infected.</li>
+
+						<li>The <b>p-value</b> can be used to detect very strange, or unlikely, results in the limiting dilution assay. For instance, if several large wells are negative but several small wells are positive, the resulting p-value will be very low, indicating that there may have been cross-contamination, improper labeling of wells, insufficiently mixed cells, or another failure of the assay. (Frequent users of this calculator should note: Every 100 assays that you run, you should expect to see a p-value below 0.01, just by chance!)</li>
+
+						<li>The <b>log-likelihood of the data</b> is of mostly technical interest.</li>
+
+						<li><b>For all-negative well outcomes</b>, the maximum likelihood estimate is formally zero. To provide more useful information, a <b>posterior median estimate</b> is given instead. This value reports the median of the Bayesian posterior distribution, using a uniform prior. If you had a reasonable prior belief that your assay could turn up at least one positive well, then this is a decent rough estimate. A higher bound is also provided, at the <b>95th percentile of the posterior</b> distribution; this is a good upper bound. The p-value and log-likelihood are not meaningful outputs in this case, and so they are not shown.</li>
+
+						<li><b>If you have all-positive assay results</b>, then close this app and use smaller wells!</li>
+					</ul>
+
+					<br>
+
+					<h5>Functionality</h5>
+					This calculator features three ways to input data. The "Custom Well Sizes" pane allows you to input data with maximum flexibility. The "Constant Limiting Dilution" pane, on the other hand, will automatically compute your well sizes given the starting well size and a dilution factor. While these are both useful, regular users may prefer the convenience of pasting data in bulk or uploading it from a text file. To use this feature, format your text such that each row has three numbers: the well size (# cells), the number of replicates for this size, and the number of positive outcomes for this size. The upload/paste feature also allows you input data for <i>multiple</i> patients. In this mode, the app will produce a graph showing the infection frequencies (IUPM) across the set of patients.
+
+					<br>
+					<br>
+
+					<h5>References</h5>
+
+					<sup>1</sup> Chun, T.-W., Carruth, L., Finzi, D., Shen, X., DiGiuseppe, J. A., Taylor, H., Hermankova, M., Chadwick, K., Margolick, J., Quinn, T. C., Kuo, Y.-H., Brookmeyer, R., Zeiger, M. A., Barditch-Crovo, P., Siliciano, R. F. 
+					<a href="http://www.ncbi.nlm.nih.gov/pubmed/9144289">Quantification of latent tissue reservoirs and total body viral load in HIV-1 infection</a>.
+					<i>Nature</i> <b>387</b>, 183–188 (1997).
+
+					<br>
+					<br>
+
+					<sup>2</sup> Laird G. M., Rosenbloom D. I. S., Lai J., Siliciano R. F., Siliciano J. D. Measuring the frequency of latent HIV-1 in resting CD4+ T cells using a limiting dilution co-culture assay. To appear in <i>HIV Protocols</i> (3rd ed). 
+
+					<br>
+					<br>
+
+				</div><!-- col -->
+			</div><!-- row -->
+		</div> <! -- tab -->
+
+		</div> <!-- tab content -->
+
+	</div> <!-- container -->
+	
+	<div class="footer">
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col-md-1 littleMargin">
+					<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
+				</div><!-- col -->
+
+				<div class="col-md-6 littleMargin">
+					<small>
+						<span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">IUPMStats</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName"><a href="http://www.danielrosenbloom.com/">Daniel Scholes Rosenbloom</a> and <a href="http://www.oliverelliott.org/">Oliver Elliott</a></span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+					</small>
+				</div><!-- col -->
+
+			</div><!-- row -->
+
+		</div>
+	</div>
+
+</body>
+</html>
