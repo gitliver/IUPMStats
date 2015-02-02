@@ -403,12 +403,15 @@ function makeOutputPlot(multiPatientOutput, isDilution)
 
 	// output data string, as a row in an HTML table
 	// var outputDataStr = "patient,maxlikelihood,lobound,hibound,loglikelihood,pvalue<br>";
-	var outputDataStr = "<table class=\"table table-bordered\"><tr><td><b>patient</b></td><td><b>maxlikelihood</b></td><td><b>lobound</b></td><td><b>hibound</b></td><td><b>loglikelihood</b></td><td><b>pvalue</b></td></tr>";
+	// var outputDataStr = "<table class=\"table table-bordered\"><tr><td><b>patient</b></td><td><b>maxlikelihood</b></td><td><b>lobound</b></td><td><b>hibound</b></td><td><b>loglikelihood</b></td><td><b>pvalue</b></td></tr>";
+	// take out loglikelihood
+	var outputDataStr = "<table class=\"table table-bordered\"><tr><td><b>patient</b></td><td><b>maxlikelihood</b></td><td><b>lobound</b></td><td><b>hibound</b></td><td><b>pvalue</b></td></tr>";
 
 	// get array slices
 	multiPatientOutput.forEach(function(entry) {
 		
-		outputDataStr += "<tr><td>" + entry.patientname + "</td><td>" + entry.maxlikelihood + "</td><td>" + entry.lbound + "</td><td>" + entry.ubound + "</td><td>" + entry.loglikelihood + "</td><td>" + entry.pvalue + "</td></tr>";
+		// outputDataStr += "<tr><td>" + entry.patientname + "</td><td>" + entry.maxlikelihood + "</td><td>" + entry.lbound + "</td><td>" + entry.ubound + "</td><td>" + entry.loglikelihood + "</td><td>" + entry.pvalue + "</td></tr>";
+		outputDataStr += "<tr><td>" + entry.patientname + "</td><td>" + entry.maxlikelihood + "</td><td>" + entry.lbound + "</td><td>" + entry.ubound + "</td><td>" + entry.pvalue + "</td></tr>";
 
 		// if max likelihood number (not string), prepare to plot
 		if ( !isNaN(entry.maxlikelihood) )
@@ -843,17 +846,18 @@ function mainFunc(data, isDilution, patientName)
 		if (totPos > 0)
 		{
 			myHtmlStr = "<i>Maximum likelihood estimate of infection frequency (in infectious units per million)</i>:<br><br>" + fEst + "<br><br>" +
-			"<i>Lower bound, Upper bound of 95% Confidence Interval</i>:<br><br>{" + loBound + ", " + hiBound + "}" + "<br><br>";
+			"<i>Lower bound, Upper bound of 95% Confidence Interval</i>:<br><br>{" + loBound + ", " + hiBound + "}";
 
 			// p value only meaningful if more than one well size AND data not all neg
 			if (df > 0)
 			{
 				pval = pochisq(chisquared, df);
 				pval = formatNumber(pval, myPrecision);
-				myHtmlStr += "<i>P-value associated to the null model in which all cells are i.i.d., for which we use a chi-squared test</i>:<br><br>" + pval + "<br><br>";
+				myHtmlStr += "<br><br><i>P-value associated to the null model in which all cells are i.i.d., for which we use a chi-squared test</i>:<br><br>" + pval;
 			}
 
-			myHtmlStr += "<i>Log-likelihood of the data, for the estimated frequency</i>:<br><br>" + maxlik;
+			// danny wants this taken out because it's confusing users:
+			// myHtmlStr += "<i>Log-likelihood of the data, for the estimated frequency</i>:<br><br>" + maxlik;
 		}
 		// data all neg
 		else

@@ -431,9 +431,7 @@
 
 						<li>The <b>p-value</b> can be used to detect very strange, or unlikely, results in the limiting dilution assay. For instance, if several large wells are negative but several small wells are positive, the resulting p-value will be very low, indicating that there may have been cross-contamination, improper labeling of wells, insufficiently mixed cells, or another failure of the assay. (Frequent users of this calculator should note: Every 100 assays that you run, you should expect to see a p-value below 0.01, just by chance!)</li>
 
-						<li>The <b>log-likelihood of the data</b> is of mostly technical interest.</li>
-
-						<li><b>For all-negative well outcomes</b>, the maximum likelihood estimate is formally zero. To provide more useful information, a <b>posterior median estimate</b> is given instead. This value reports the median of the Bayesian posterior distribution, using a uniform prior. If you had a reasonable prior belief that your assay could turn up at least one positive well, then this is a decent rough estimate. A higher bound is also provided, at the <b>95th percentile of the posterior</b> distribution; this is a good upper bound. The p-value and log-likelihood are not meaningful outputs in this case, and so they are not shown.</li>
+						<li><b>For all-negative well outcomes</b>, the maximum likelihood estimate is formally zero. To provide more useful information, a <b>posterior median estimate</b> is given instead. This value reports the median of the Bayesian posterior distribution, using a uniform prior. If you had a reasonable prior belief that your assay could turn up at least one positive well, then this is a decent rough estimate. A higher bound is also provided, at the <b>95th percentile of the posterior</b> distribution; this is a good upper bound. The p-value is not a meaningful output in this case, so it is not shown.</li>
 
 						<li><b>If you have all-positive assay results</b>, then close this app and use smaller wells!</li>
 					</ul>
