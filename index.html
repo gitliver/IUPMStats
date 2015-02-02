@@ -3,7 +3,7 @@
 <head>
 
         <!-- title -->
-        <title>IUPMStats</title>
+        <title>IUPMStats v1.0 | Infection Frequency Calculator</title>
 
         <!-- meta -->
         <meta name="description" content="IUPMStats">
@@ -79,6 +79,17 @@
 		showHideInstructions();
 	}); 
 	</script>
+
+	<!-- Google Analytics -->
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-57616603-1', 'auto');
+	ga('send', 'pageview');
+	</script>
 </head>
 
 <body>
@@ -110,7 +121,7 @@
 		<h4>Infection Frequency Calculator</h4>
 
 		<br>
-			
+
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist" id="myTabSet">
 			<li class="dropdown">
@@ -149,7 +160,6 @@
 
 				<div class="col-md-4">
 				<small>
-				To measure the frequency of HIV-1 latency, <a href="http://www.hopkinsmedicine.org/profiles/results/directory/profile/4373686/robert-siliciano">The Siliciano Lab </a> developed an assay that uses uninfected donor cells to grow HIV-1 out of cells from infected patients at various dilutions. This calculator, written by <a href="http://www.danielrosenbloom.com">Daniel Rosenbloom</a>, computes the frequency of latent infection based on which dilutions of patient cells are positive for HIV-1 growth.
 				<b>Use this calculator to estimate infection frequencies from limiting dilution assays.</b> In particular, this calculator can be used with an outgrowth assay to measure latent infection in HIV <sup>1, 2</sup>. Enter information about your wells in the following order, using a separate line for each well size: number of cells per well, number of replicates of this size, and number of positive outcomes (i.e., wells in which outgrowth was detected). In addition to providing a maximum-likelihood estimate, this calculator returns a 95% confidence interval. Further information about interpreting the output is provided under "<a id="aboutCalculator">About this Calculator</a>."
 				</small>
 				<br>
