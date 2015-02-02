@@ -764,12 +764,10 @@ function mainFunc(data, isDilution, patientName)
 			}
 
 			fEst = findPercentile(0.5, totCells);
-			loBound = findPercentile(0.025, totCells);
-			hiBound = findPercentile(0.975, totCells);
-			maxlik = ll(data, fEst);
-
 			// if all wells neg, no lower bound
 			loBound = "NA";
+			hiBound = findPercentile(0.95, totCells);
+			maxlik = ll(data, fEst);
 		}
 		else
 		{
