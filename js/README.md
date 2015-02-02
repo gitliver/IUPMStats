@@ -1,0 +1,5 @@
+- [Chart.min.js](http://www.chartjs.org) - Chart making tools
+- [Cobyla.js](https://code.google.com/p/jscobyla/) - Nonlinear constrained optimization in JavaScript
+- [chiCalc.js](http://bavard.fourmilab.ch/rpkp/experiments/analysis/chiCalc.html) - Chi-Square Calculator
+- [math.min.js](http://mathjs.org) - An extensive math library for JavaScript
+- my_functions_calc.js - The IUPM program
